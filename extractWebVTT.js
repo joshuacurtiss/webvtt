@@ -1,11 +1,11 @@
-// extractWebVTT will receive a video file and use mplayer to retrieve
-// chaper information. It then converts the output from mplayer into a
-// valid WebVTT format and saves it as a file with same name/path with
-// extension .webvtt! 
+// extractWebVTT will receive a video file and use a video processing
+// utility to retrieve chaper information. It then converts the output 
+// into a valid WebVTT format and saves it as a file with same name/path 
+// with extension .webvtt! 
 
 // Dependencies
 const WebVTT=require("./lib/WebVTT");
-const MPlayer=require("./wrappers/MPlayer");
+const WrapperController=require("./wrappers/WrapperController");
 const fs=require("fs");
 
 // Variables
@@ -13,8 +13,9 @@ var videoFilePath=process.argv[2];
 
 // Run then process the mplayer results
 if( fs.existsSync(videoFilePath) ) {
-    var mplayer=new MPlayer();
-    mplayer.createWebVTT(videoFilePath,function(err,webvtt){
+    var wc=new WrapperController();
+    var wrapper=wc.wrapper;
+    wrapper.createWebVTT(videoFilePath,function(err,webvtt){
         if(err) {
             console.error(err.toString());
         } else {
