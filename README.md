@@ -16,6 +16,10 @@ To run the tests (must have mocha installed):
 mocha
 ```
 
+This library ultimately uses either `ffprobe` or `mplayer` command-line 
+utilities to handle the video inspection. Have them installed in the
+PATH for seamless execution.
+
 ## Further Documentation ##
 
 More info soon.
