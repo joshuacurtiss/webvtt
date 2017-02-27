@@ -1,5 +1,7 @@
 const WebVTT=require("../lib/WebVTT");
-const exec=require('child_process').exec;
+const child_process=require('child_process');
+const exec=child_process.exec;
+const execSync=child_process.execSync;
 
 class MPlayer {
 
@@ -31,6 +33,14 @@ class MPlayer {
                 cb(null,webvtt);
             }
         })
+    }
+
+    executableExists() {
+        var output="";
+        try {
+            output=execSync(this.executablePath,{encoding:"UTF-8"});
+        } catch(e) {}
+        return (output.indexOf("MPlayer")>=0);
     }
 
 }
