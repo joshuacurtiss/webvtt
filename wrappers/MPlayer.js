@@ -32,7 +32,25 @@ class MPlayer {
                 var webvtt=new WebVTT(arr);
                 cb(null,webvtt);
             }
-        })
+        });
+    }
+
+    getInfo(videoPath,cb) {
+        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 ${videoPath}`,(err,stdout,stderr)=>{
+            if( err ) {
+                cb(err,null);
+            } else {
+                var findStart=stdout.match(/^id_start_time=([\d.]+)$/im);
+                var findDuration=stdout.match(/^id_length=([\d.]+)$/im);
+                var findBitrate=stdout.match(/^id_video_bitrate=([\d.]+)$/im);
+                var info={
+                    "start": findStart.length>1?parseFloat(findStart[1]):null,
+                    "duration": findDuration.length>1?parseFloat(findDuration[1]):null,
+                    "bitrate": findBitrate.length>1?parseFloat(findBitrate[1]):null
+                };
+                cb(null,info);
+            }
+        });
     }
 
     executableExists() {

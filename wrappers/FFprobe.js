@@ -30,7 +30,23 @@ class FFprobe {
                 var webvtt=new WebVTT(chapters);
                 cb(null,webvtt);
             }
-        })
+        });
+    }
+
+    getInfo(videoPath,cb) {
+        exec(`${this.executablePath} -show_format -of json ${videoPath}`,(err,stdout,stderr)=>{
+            if( err ) {
+                cb(err,null);
+            } else {
+                var data=JSON.parse(stdout);
+                var info={
+                    "start": parseFloat(data.format["start_time"]),
+                    "duration": parseFloat(data.format["duration"]),
+                    "bitrate": parseFloat(data.format["bit_rate"])
+                };
+                cb(null,info);
+            }
+        });
     }
 
     executableExists() {
