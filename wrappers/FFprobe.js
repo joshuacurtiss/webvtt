@@ -11,13 +11,13 @@ class FFprobe {
     }
 
     createWebVTT(videoPath,cb) {
-        exec(`${this.executablePath} -show_chapters -of json ${videoPath}`,(err,stdout,stderr)=>{
+        exec(`${this.executablePath} -show_chapters -of json "${videoPath}"`,(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._createWebVTT(stdout));
         });
     }
     createWebVTTSync(videoPath) {
-        return this._createWebVTT(execSync(`${this.executablePath} -show_chapters -of json ${videoPath}`));
+        return this._createWebVTT(execSync(`${this.executablePath} -show_chapters -of json "${videoPath}"`));
     }
     _createWebVTT(json) {
         var data=JSON.parse(json);
@@ -36,13 +36,13 @@ class FFprobe {
     }
 
     getInfo(videoPath,cb) {
-        exec(`${this.executablePath} -show_format -of json ${videoPath}`,(err,stdout,stderr)=>{
+        exec(`${this.executablePath} -show_format -of json "${videoPath}"`,(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._getInfo(stdout));
         });
     }
     getInfoSync(videoPath) {
-        return this._getInfo(execSync(`${this.executablePath} -show_format -of json ${videoPath}`));
+        return this._getInfo(execSync(`${this.executablePath} -show_format -of json "${videoPath}"`));
     }
     _getInfo(json) {
         var data=JSON.parse(json);

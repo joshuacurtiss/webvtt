@@ -11,13 +11,13 @@ class MPlayer {
     }
 
     createWebVTT(videoPath,cb) {
-        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 ${videoPath}`,(err,stdout,stderr)=>{
+        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`,(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._createWebVTT(stdout));
         });
     }
     createWebVTTSync(videoPath) {
-        return this._createWebVTT(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 ${videoPath}`));
+        return this._createWebVTT(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`));
     }
     _createWebVTT(txt) {
         var match, data={};
@@ -38,13 +38,13 @@ class MPlayer {
     }
 
     getInfo(videoPath,cb) {
-        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 ${videoPath}`,(err,stdout,stderr)=>{
+        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`,(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._getInfo(stdout));
         });
     }
     getInfoSync(videoPath) {
-        return this._getInfo(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 ${videoPath}`));
+        return this._getInfo(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`));
     }
     _getInfo(txt) {
         var string=new String(txt);
