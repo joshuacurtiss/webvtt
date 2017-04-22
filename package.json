@@ -1,6 +1,6 @@
 {
   "name": "webvtt",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "WebVTT parsing and generation for Node.js.",
   "scripts": {
     "test": "mocha"
