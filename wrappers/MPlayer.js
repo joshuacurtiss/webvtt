@@ -1,7 +1,7 @@
 const WebVTT=require("../lib/WebVTT");
 const child_process=require('child_process');
-const exec=child_process.exec;
-const execSync=child_process.execSync;
+const execFile=child_process.execFile;
+const execFileSync=child_process.execFileSync;
 
 class MPlayer {
 
@@ -11,13 +11,13 @@ class MPlayer {
     }
 
     createWebVTT(videoPath,cb) {
-        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`,(err,stdout,stderr)=>{
+        execFile(this.executablePath,[`-vo`,`null`,`-ao`,`null`,`-identify`,`-frames`,`0`,videoPath],(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._createWebVTT(stdout));
         });
     }
     createWebVTTSync(videoPath) {
-        return this._createWebVTT(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`));
+        return this._createWebVTT(execFileSync(this.executablePath,[`-vo`,`null`,`-ao`,`null`,`-identify`,`-frames`,`0`,videoPath]));
     }
     _createWebVTT(txt) {
         var match, data={};
@@ -38,13 +38,13 @@ class MPlayer {
     }
 
     getInfo(videoPath,cb) {
-        exec(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`,(err,stdout,stderr)=>{
+        execFile(this.executablePath,[`-vo`,`null`,`-ao`,`null`,`-identify`,`-frames`,`0`,videoPath],(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._getInfo(stdout));
         });
     }
     getInfoSync(videoPath) {
-        return this._getInfo(execSync(`${this.executablePath} -vo null -ao null -identify -frames 0 "${videoPath}"`));
+        return this._getInfo(execFileSync(this.executablePath,[`-vo`,`null`,`-ao`,`null`,`-identify`,`-frames`,`0`,videoPath]));
     }
     _getInfo(txt) {
         var string=new String(txt);
@@ -61,7 +61,7 @@ class MPlayer {
     executableExists() {
         var output="";
         try {
-            output=execSync(this.executablePath,{encoding:"UTF-8"});
+            output=execFileSync(this.executablePath,{encoding:"UTF-8"});
         } catch(e) {}
         return (output.indexOf("MPlayer")>=0);
     }

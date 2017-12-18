@@ -1,7 +1,7 @@
 const WebVTT=require("../lib/WebVTT");
 const child_process=require('child_process');
-const exec=child_process.exec;
-const execSync=child_process.execSync;
+const execFile=child_process.execFile;
+const execFileSync=child_process.execFileSync;
 
 class FFprobe {
 
@@ -11,13 +11,13 @@ class FFprobe {
     }
 
     createWebVTT(videoPath,cb) {
-        exec(`${this.executablePath} -show_chapters -of json "${videoPath}"`,(err,stdout,stderr)=>{
+        execFile(this.executablePath,[`-show_chapters`,`-of`,`json`,videoPath],(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._createWebVTT(stdout));
         });
     }
     createWebVTTSync(videoPath) {
-        return this._createWebVTT(execSync(`${this.executablePath} -show_chapters -of json "${videoPath}"`));
+        return this._createWebVTT(execFileSync(this.executablePath,[`-show_chapters`,`-of`,`json`,videoPath]));
     }
     _createWebVTT(json) {
         var data=JSON.parse(json);
@@ -36,13 +36,13 @@ class FFprobe {
     }
 
     getInfo(videoPath,cb) {
-        exec(`${this.executablePath} -show_format -of json "${videoPath}"`,(err,stdout,stderr)=>{
+        execFile(this.executablePath,[`-show_format`,`-of`,`json`,videoPath],(err,stdout,stderr)=>{
             if( err ) cb(err,null);
             else cb(null,this._getInfo(stdout));
         });
     }
     getInfoSync(videoPath) {
-        return this._getInfo(execSync(`${this.executablePath} -show_format -of json "${videoPath}"`));
+        return this._getInfo(execFileSync(this.executablePath,[`-show_format`,`-of`,`json`,videoPath]));
     }
     _getInfo(json) {
         var data=JSON.parse(json);
@@ -56,7 +56,7 @@ class FFprobe {
     executableExists() {
         var output="";
         try {
-            output=execSync(`${this.executablePath} -version`,{encoding:"UTF-8"});
+            output=execFileSync(this.executablePath,[`-version`],{encoding:"UTF-8"});
         } catch(e) {}
         return (output.indexOf("ffprobe")>=0);
     }
